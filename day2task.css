@@ -1,0 +1,19 @@
+a cursor {
+    cursor: pointer;    
+}
+a:link {
+    color: blue; 
+    text-decoration: none;    
+}
+
+a:visited {
+    color: orange;     
+}
+
+a:hover {
+    color: green;       
+}
+
+a:active {
+    color: red;         
+}
