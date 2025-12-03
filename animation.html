@@ -9,6 +9,19 @@
             from {transform: translateX(0);}
             to {transform: translateX(500px);}
         }
+        @keyframes growbox {
+            0% {width: 50px; height: 50px;}
+            50% {background-color: yellow;}
+            100% {width: 200px; height: 200px;}
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        } 
+        @keyframes rot{
+            from {transform: rotate(0deg);}
+            to {transform: rotate(360deg);}
+        }
         .box{
         width: 50px;
         height: 50px;
@@ -19,10 +32,46 @@
         background-color: royalblue;
         animation: moveRight 2s infinite alternate;
         }
+        .grow{
+        width: 50px;
+        height: 50px;
+        margin-left: 100px;
+        margin-top: 100px;
+        border: 2px solid royalblue;
+        padding: 60px;
+        background-color: royalblue;
+        animation: growbox 2s infinite alternate;
+        }
+        .fade{
+        width: 50px;
+        height: 50px;
+        margin-left: 100px;
+        margin-top: 100px;
+        border: 2px solid royalblue;
+        padding: 60px;
+        background-color: royalblue;
+        animation: fadeIn 2s infinite alternate;
+        }
+        .rot{
+        width: 50px;
+        height: 50px;
+        margin-left: 100px;
+        margin-top: 100px;
+        border: 2px solid royalblue;
+        padding: 60px;
+        background-color: royalblue;
+        animation: rot 2s infinite alternate;
+        }
     </style>
 </head>
 <body>
     <div class="box">
+        <animate attributeName="x" from="0" to="1000" dur="2s" repeatCount="indefinite"/></div>
+    <div class="grow">
+        <animate attributeName="x" from="0" to="1000" dur="2s" repeatCount="indefinite"/></div>
+    <div class="fade">
+        <animate attributeName="x" from="0" to="1000" dur="2s" repeatCount="indefinite"/></div>
+    <div class="rot">
         <animate attributeName="x" from="0" to="1000" dur="2s" repeatCount="indefinite"/></div>
 </body>
 </html>
