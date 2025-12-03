@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @keyframes moveRight {
+            from {transform: translateX(0);}
+            to {transform: translateX(500px);}
+        }
+        .box{
+        width: 50px;
+        height: 50px;
+        margin-left: 100px;
+        margin-top: 100px;
+        border: 2px solid royalblue;
+        padding: 60px;
+        background-color: royalblue;
+        animation: moveRight 2s infinite alternate;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <animate attributeName="x" from="0" to="1000" dur="2s" repeatCount="indefinite"/></div>
+</body>
+</html>
