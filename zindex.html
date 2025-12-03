@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .one{
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            color: white;
+            top: 50px;
+            left: 50px;
+            z-index: 2;
+        }
+        .two{
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            color: white;
+            z-index: 4;
+        }
+        .three{
+            position: relative;
+            height: 100px;
+            width: 100px;
+            background-color: blue;
+            color: white;
+            z-index: 10;
+        }   
+        #test{
+            background: black;
+            color: white;
+            padding: 15px;
+            width: 90%;
+            height: 100px;
+            overflow: scroll;
+            border: 1px solid #ccc;
+        }
+        .container {
+            display: flex;
+            background-color: DodgerBlue;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .container div {
+            background-color: #f1f1f1;
+            margin: 10px;
+            padding: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="one"><center>1</center></div>
+    <div class="two"><center>2</center></div>
+    <div class="three"><center>3</center></div>
+    <div id="test">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui minus rem modi ea exercitationem facilis illo nisi ad vitae a architecto quidem excepturi praesentium natus, nostrum perspiciatis nam quae ullam vel cupiditate labore voluptas doloribus voluptates non. Possimus earum delectus facilis sit sequi ad, perferendis corporis commodi eos veritatis, odit unde explicabo harum quibusdam totam, tempora voluptas iure! Ex alias similique fugiat ab nulla perferendis expedita quam voluptates, nisi delectus porro aut iste laudantium dolorum doloribus natus exercitationem, minima nesciunt mollitia dolore beatae facere vitae esse? Fuga aliquid ex distinctio consequuntur sit tempora? Quaerat distinctio excepturi iusto, facere dolores neque alias consequuntur nihil, repellendus eveniet soluta et maxime, mollitia provident pariatur porro consectetur cumque ullam nemo! Voluptatibus dolorum consectetur dicta aliquam, dignissimos suscipit? Rem provident praesentium in exercitationem voluptatem officiis, ipsa iure mollitia, quis, facilis cumque. Quaerat cum laboriosam odio eaque facilis consectetur, officia error doloremque nam facere accusamus sunt ipsum non sint recusandae cupiditate fugit quas in ducimus adipisci velit corrupti iusto illum! Molestiae ducimus temporibus incidunt non magnam corrupti suscipit voluptas alias reprehenderit atque. Modi labore expedita, saepe fugit at et. Sequi suscipit ratione, excepturi voluptate itaque, sed eligendi odio omnis dolor quisquam non ab eum amet voluptatem.</div>
+    <div class="container">
+        <div><center>Item 1</center></div><div><center>Item 2</center></div><div><center>Item 3</center></div>
+    </div>
+</body>
+</html>
