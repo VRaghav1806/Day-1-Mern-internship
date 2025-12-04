@@ -32,7 +32,70 @@ function example(){
     console.log(c);
 }
 example();
-greet("raghav");
-function greet(name){
+const b=function(name){
     console.log(`Hello ${name}`);
 }
+b("Raghav");
+function process(callback){
+    console.log("processing..");
+    callback();
+}
+function done(){
+    console.log("task completed");
+}
+process(done);
+function highorder(func){
+    console.log("calling the passed function");
+    func();
+}
+function sayhi(){
+    console.log("hi callback");
+}
+highorder(sayhi);
+const greet=function(name){
+    return "Hello "+name;
+}
+const greetarrow=(name)=>{
+    return "Hello "+name;
+}
+console.log(greet("Raghav"));
+console.log(greetarrow("Raghav"));
+const add=(x,y)=>x+y;
+console.log(add(5,3));
+const square=x=>x*x;
+console.log(square(4));
+const fruits=["apple","banana","mango"];
+const newLength = fruits.push("orange");
+console.log(fruits);
+console.log(newLength);
+const fruit=["apple","banana","mango"];
+const newlength = fruit.unshift("orange");
+console.log(fruit);
+console.log(newlength);
+const f=["apple","banana","mango"];
+const newength = f.pop("orange");
+console.log(f);
+console.log(newength);
+const frui=["apple","banana","mango"];
+const nelength = frui.shift();
+console.log(frui);
+console.log(nelength);
+const numbers=[1,2,3,4,5];
+console.log(numbers);
+console.log(numbers.slice(1,4));
+console.log(numbers.slice(2));
+console.log(numbers.slice(-2));
+console.log(numbers.includes(3));
+console.log(numbers.includes(6));
+console.log(numbers.find(num=> num>3));
+let nums=[3,5,7,8,10];
+let even=nums.filter(num=> num%2==0);
+console.log(even);
+let greater=nums.filter(num=> num>4);
+console.log(greater);
+
+
+
+
+
+
