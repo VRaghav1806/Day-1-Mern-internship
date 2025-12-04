@@ -93,8 +93,57 @@ let even=nums.filter(num=> num%2==0);
 console.log(even);
 let greater=nums.filter(num=> num>4);
 console.log(greater);
-
-
+let find=nums.find(num=> num>4);
+console.log(find);
+let m=nums.map(num=> num*2);
+console.log(m);
+let me=nums.map(num=> num>5);
+console.log(me);
+let price=[200,350];
+let p=price.map(num=>num+100);
+console.log(p);
+let per=["Kumar","Vijay","Sasi"];
+let person=per.map(n=>"Mr."+n);
+console.log(person);
+let persons={name:"Raghav",age:19,city:"Coimbatore"};
+console.log(persons.name);
+console.log(persons["age"]);
+persons.age=20;
+console.log(persons["age"]);
+const students = [
+  { name: "Raghav", age: 20, grade: "A" },
+  { name: "Kiran", age: 21, grade: "B" },
+  { name: "Meena", age: 19, grade: "A+" },
+];
+let nam=students.map(student=>student.name);
+console.log(nam);
+let marks=[{name:"kiran",score:95},{name:"karan",score:40}];
+let sub=marks.filter(f=>f.score>50).map(mark=>mark.name);
+console.log(sub);
+const st={
+    name:"Raghav",
+    age:19,
+    city:"Coimbatore",
+}
+for(let key in st){
+    console.log(key+" : "+st[key]);
+}       
+let fru=["apple","banana","mango"];
+for(let index of fru){
+    console.log(index);
+}
+let nu=[10,20,30]
+let t=nu.reduce((sum,current)=>sum+current,0);
+console.log(t);
+let factorial=[1,2,3,4];
+let fct=factorial.reduce((prod,current)=>prod*current,1);
+console.log(fct);
+const arr1=[1,2,3];
+const arr2=[4,5,6];
+const combined=arr1.concat(arr2);
+console.log(combined);
+const spread=[...arr1,...arr2];
+console.log(spread);
 
 
 
