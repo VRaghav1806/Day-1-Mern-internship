@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Manager — Tailwind + JS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: {} } }
+  </script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-slate-200 p-6">
+  <div class="max-w-4xl mx-auto">
+    <header class="mb-6 flex items-center justify-between">
+      <h1 class="text-2xl font-bold">Student Manager</h1>
+      <p class="text-sm text-slate-400">Add / View / Transform students</p>
+    </header>
+
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Add Student -->
+      <section class="bg-slate-800 rounded-xl p-6 shadow">
+        <h2 class="text-lg font-semibold mb-3">Add Student</h2>
+        <form id="addForm" class="space-y-3">
+          <div>
+            <label class="block text-sm text-slate-300">Name</label>
+            <input id="name" required class="mt-1 w-full px-3 py-2 rounded-md bg-slate-700 text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-slate-500" placeholder="e.g., Raghav" />
+          </div>
+
+          <div>
+            <label class="block text-sm text-slate-300">Grade</label>
+            <select id="grade" required class="mt-1 w-full px-3 py-2 rounded-md bg-slate-700 text-white outline-none">
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit" class="px-4 py-2 rounded-md bg-emerald-600 text-black font-medium">Add Student</button>
+            <button type="button" id="clearBtn" class="px-3 py-2 rounded-md bg-slate-700 text-slate-200">Clear</button>
+          </div>
+        </form>
+
+        <div class="mt-6 border-t border-slate-700 pt-4 text-sm text-slate-400">
+          Students stored in this session. Use the controls to transform or filter list below.
+        </div>
+      </section>
+
+      <!-- Controls -->
+      <section class="bg-slate-800 rounded-xl p-6 shadow flex flex-col justify-between">
+        <div>
+          <h2 class="text-lg font-semibold mb-3">Controls</h2>
+
+          <div class="space-y-3">
+            <button id="uppercaseBtn" class="w-full px-4 py-2 rounded-md bg-indigo-600 text-black">Uppercase All Names</button>
+
+            <div class="flex gap-3">
+              <input id="filterGrade" placeholder="Filter by grade (A/B/C/D)" class="flex-1 px-3 py-2 rounded-md bg-slate-700" />
+              <button id="applyFilter" class="px-4 py-2 rounded-md bg-slate-600">Apply</button>
+            </div>
+
+            <button id="resetFilter" class="w-full px-4 py-2 rounded-md bg-slate-700">Reset Filter</button>
+
+            <button id="exportBtn" class="w-full px-4 py-2 rounded-md bg-amber-600 text-black">Export JSON</button>
+
+            <button id="loadSample" class="w-full px-4 py-2 rounded-md bg-slate-600">Load Sample Students</button>
+
+            <button id="clearAll" class="w-full px-4 py-2 rounded-md bg-red-600">Clear All Students</button>
+          </div>
+        </div>
+
+        <div class="mt-4 text-xs text-slate-400">Tip: Data is kept in memory (page refresh clears it). You can export to JSON before leaving.</div>
+      </section>
+
+      <!-- Students List -->
+      <section class="md:col-span-2 bg-slate-800 rounded-xl p-6 shadow">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold">Students</h2>
+          <div class="text-sm text-slate-400">Count: <span id="count">0</span></div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left table-auto border-collapse">
+            <thead>
+              <tr class="text-slate-300 text-sm">
+                <th class="pb-2 pr-4">#</th>
+                <th class="pb-2 pr-4">Name</th>
+                <th class="pb-2 pr-4">Grade</th>
+                <th class="pb-2 pr-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTbody" class="align-top"></tbody>
+          </table>
+        </div>
+
+        <div id="filteredBy" class="mt-4 text-sm text-slate-400"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Simple in-memory store
+    let students = [];
+    let currentFilter = null;
+
+    const addForm = document.getElementById('addForm');
+    const nameInput = document.getElementById('name');
+    const gradeInput = document.getElementById('grade');
+    const studentsTbody = document.getElementById('studentsTbody');
+    const countEl = document.getElementById('count');
+    const uppercaseBtn = document.getElementById('uppercaseBtn');
+    const filterGrade = document.getElementById('filterGrade');
+    const applyFilter = document.getElementById('applyFilter');
+    const resetFilter = document.getElementById('resetFilter');
+    const exportBtn = document.getElementById('exportBtn');
+    const loadSample = document.getElementById('loadSample');
+    const clearAll = document.getElementById('clearAll');
+    const clearBtn = document.getElementById('clearBtn');
+    const filteredBy = document.getElementById('filteredBy');
+
+    function render() {
+      // optionally apply filter
+      let list = students;
+      if (currentFilter) {
+        list = students.filter(s => s.grade.toUpperCase() === currentFilter.toUpperCase());
+        filteredBy.textContent = `Filtered by grade: ${currentFilter.toUpperCase()}`;
+      } else {
+        filteredBy.textContent = '';
+      }
+
+      studentsTbody.innerHTML = '';
+      list.forEach((s, i) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-t border-slate-700/60';
+        tr.innerHTML = `
+          <td class="py-3 pr-4 align-top text-sm">${i + 1}</td>
+          <td class="py-3 pr-4 align-top text-sm">${escapeHtml(s.name)}</td>
+          <td class="py-3 pr-4 align-top text-sm font-medium">${s.grade.toUpperCase()}</td>
+          <td class="py-3 pr-4 align-top text-sm">
+            <button data-index="${i}" class="editBtn mr-2 px-2 py-1 rounded bg-slate-700">Edit</button>
+            <button data-index="${i}" class="delBtn px-2 py-1 rounded bg-red-600">Delete</button>
+          </td>
+        `;
+        studentsTbody.appendChild(tr);
+      });
+
+      countEl.textContent = list.length;
+
+      // attach handlers
+      Array.from(document.getElementsByClassName('delBtn')).forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = Number(e.currentTarget.getAttribute('data-index'));
+          // find actual index if filtered
+          if (currentFilter) {
+            const grade = currentFilter.toUpperCase();
+            const filtered = students.filter(s => s.grade.toUpperCase() === grade);
+            const actualName = filtered[idx].name;
+            const actualIndex = students.findIndex(s => s.name === actualName && s.grade.toUpperCase() === grade);
+            if (actualIndex > -1) students.splice(actualIndex, 1);
+          } else students.splice(idx, 1);
+          render();
+        });
+      });
+
+      Array.from(document.getElementsByClassName('editBtn')).forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = Number(e.currentTarget.getAttribute('data-index'));
+          let actualIndex = idx;
+          if (currentFilter) {
+            const grade = currentFilter.toUpperCase();
+            const filtered = students.filter(s => s.grade.toUpperCase() === grade);
+            const actualName = filtered[idx].name;
+            actualIndex = students.findIndex(s => s.name === actualName && s.grade.toUpperCase() === grade);
+          }
+
+          const s = students[actualIndex];
+          const newName = prompt('Edit name', s.name);
+          if (newName !== null) {
+            students[actualIndex].name = newName.trim();
+            render();
+          }
+        });
+      });
+    }
+
+    function escapeHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    addForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = nameInput.value.trim();
+      const grade = gradeInput.value.trim().toUpperCase();
+      if (!name) return alert('Please enter a name');
+
+      students.push({ name, grade });
+      nameInput.value = '';
+      gradeInput.value = 'A';
+      currentFilter = null;
+      filterGrade.value = '';
+      render();
+    });
+
+    clearBtn.addEventListener('click', () => {
+      nameInput.value = '';
+      gradeInput.value = 'A';
+    });
+
+    uppercaseBtn.addEventListener('click', () => {
+      students = students.map(s => ({ ...s, name: s.name.toUpperCase() }));
+      render();
+    });
+
+    applyFilter.addEventListener('click', () => {
+      const g = filterGrade.value.trim().toUpperCase();
+      if (!g) return alert('Enter a grade (A/B/C/D)');
+      if (!['A','B','C','D'].includes(g)) return alert('Grade must be A, B, C or D');
+      currentFilter = g;
+      render();
+    });
+
+    resetFilter.addEventListener('click', () => {
+      currentFilter = null;
+      filterGrade.value = '';
+      render();
+    });
+
+    exportBtn.addEventListener('click', () => {
+      const dataStr = JSON.stringify(students, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'students.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    loadSample.addEventListener('click', () => {
+      students = [
+        { name: 'Raghav', grade: 'A' },
+        { name: 'Meera', grade: 'B' },
+        { name: 'Anil', grade: 'A' },
+        { name: 'Sofia', grade: 'C' }
+      ];
+      currentFilter = null; filterGrade.value = '';
+      render();
+    });
+
+    clearAll.addEventListener('click', () => {
+      if (!confirm('Clear all students? This cannot be undone.')) return;
+      students = [];
+      render();
+    });
+
+    // initial render
+    render();
+  </script>
+</body>
+</html>
