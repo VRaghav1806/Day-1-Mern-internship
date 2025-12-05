@@ -17,7 +17,6 @@
     </header>
 
     <main class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Add Student -->
       <section class="bg-slate-800 rounded-xl p-6 shadow">
         <h2 class="text-lg font-semibold mb-3">Add Student</h2>
         <form id="addForm" class="space-y-3">
@@ -46,8 +45,6 @@
           Students stored in this session. Use the controls to transform or filter list below.
         </div>
       </section>
-
-      <!-- Controls -->
       <section class="bg-slate-800 rounded-xl p-6 shadow flex flex-col justify-between">
         <div>
           <h2 class="text-lg font-semibold mb-3">Controls</h2>
@@ -72,8 +69,6 @@
 
         <div class="mt-4 text-xs text-slate-400">Tip: Data is kept in memory (page refresh clears it). You can export to JSON before leaving.</div>
       </section>
-
-      <!-- Students List -->
       <section class="md:col-span-2 bg-slate-800 rounded-xl p-6 shadow">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold">Students</h2>
@@ -100,7 +95,6 @@
   </div>
 
   <script>
-    // Simple in-memory store
     let students = [];
     let currentFilter = null;
 
@@ -120,7 +114,6 @@
     const filteredBy = document.getElementById('filteredBy');
 
     function render() {
-      // optionally apply filter
       let list = students;
       if (currentFilter) {
         list = students.filter(s => s.grade.toUpperCase() === currentFilter.toUpperCase());
@@ -146,12 +139,9 @@
       });
 
       countEl.textContent = list.length;
-
-      // attach handlers
       Array.from(document.getElementsByClassName('delBtn')).forEach(btn => {
         btn.addEventListener('click', (e) => {
           const idx = Number(e.currentTarget.getAttribute('data-index'));
-          // find actual index if filtered
           if (currentFilter) {
             const grade = currentFilter.toUpperCase();
             const filtered = students.filter(s => s.grade.toUpperCase() === grade);
@@ -257,8 +247,6 @@
       students = [];
       render();
     });
-
-    // initial render
     render();
   </script>
 </body>
