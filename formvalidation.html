@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form id="myform">
+        <label>Name:</label>
+        <input type="text" id="name" placeholder="Enter your name">
+        <br><br>
+
+        <label>Email:</label>
+        <input type="text" id="email" placeholder="Enter your email">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <p id="message"></p>
+    <script>
+        const form = document.getElementById('myform');
+        const message = document.getElementById('message');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            let errorMessages = [];
+            if (name === '') {
+                errorMessages.push('Name is required.');
+            }
+            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (email === '') {
+                errorMessages.push('Email is required.');
+            } else if (!email.match(emailPattern)) {
+                errorMessages.push('Please enter a valid email address.');
+            }
+            if (errorMessages.length > 0) {
+                message.innerHTML = errorMessages.join('<br>');
+            } else {
+                message.style.color = 'green';
+                message.innerHTML = 'Form submitted successfully!';
+            }
+        });
+    </script>
+</body>
+</html>
