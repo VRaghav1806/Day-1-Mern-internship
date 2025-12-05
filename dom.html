@@ -3,12 +3,11 @@
     <title>DOM Example</title>  
 </head>  
 <body>
-    <p id="myParagraph">This is a paragraph.</p>  
-    <button onclick="changeContent()">Change Content</button>
+    <p class="mypara">One</p>  
+    <p class="mypara">Two</p>
     <script>  
-        function changeContent() {  
-            document.getElementById("myParagraph").innerHTML = "<b>The content has been changed!</b";  
-        }  
+        const firstpara = document.querySelectorAll('.mypara');
+        console.log(firstpara.innerText); 
     </script>
     </body>
 </html>
