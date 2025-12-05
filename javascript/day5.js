@@ -41,3 +41,21 @@ const[a,b,c]=[10,20,30];
 console.log(a);
 console.log(b);
 console.log(c);
+const[x,y,z,...rest]=[10,20,30,40,50,60,70,80,90];
+console.log(x);
+console.log(y);
+console.log(z);
+console.log(rest);
+const user={
+    name:"John",
+    age:30,
+    city:"New York"
+};
+const{name,age,...otherDetails}=user;
+console.log(name);
+console.log(age);
+console.log(otherDetails);
+function greet({name,age}){
+    console.log(`Hello, my name is ${name} and I am ${age} years old.`);
+}
+greet({name:"Alice",age:25});
